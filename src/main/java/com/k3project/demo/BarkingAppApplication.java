@@ -1,4 +1,4 @@
-package com.k3project.demo.myApp;
+package com.k3project.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
