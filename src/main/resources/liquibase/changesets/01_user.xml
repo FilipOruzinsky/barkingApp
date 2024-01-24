@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="foruzisnky">
+        <comment>KAN-8: create uuid function</comment>
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="foruzsinky">
+        <comment>KAN-8: Create table "user"</comment>
+        <sql>
+            <![CDATA[
+            CREATE TABLE IF NOT EXISTS "user"
+            (
+               "userId"       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                "firstName"    VARCHAR(255),
+                "lastName"     VARCHAR(255),
+                "address"      VARCHAR(255),
+                "phoneNumber"  VARCHAR(20),
+                "email"        VARCHAR(255)
+            );
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="foruzsinky">
+        <comment>KAN-8: Insert fake data into "user" table</comment>
+        <sql>
+            <![CDATA[
+            INSERT INTO "user" ("firstName", "lastName", "address", "phoneNumber", "email")
+            VALUES
+                ('John', 'Doe', '123 Main St', '555-1234', 'john.doe@example.com'),
+                ('Jane', 'Smith', '456 Oak St', '555-5678', 'jane.smith@example.com'),
+                ('Bob', 'Johnson', '789 Pine St', '555-9012', 'bob.johnson@example.com'),
+                ('Alice', 'Williams', '101 Elm St', '555-3456', 'alice.williams@example.com'),
+                ('Charlie', 'Brown', '202 Maple St', '555-7890', 'charlie.brown@example.com'),
+                ('Eva', 'Davis', '303 Cedar St', '555-2345', 'eva.davis@example.com'),
+                ('Frank', 'Jones', '404 Birch St', '555-6789', 'frank.jones@example.com'),
+                ('Grace', 'Miller', '505 Walnut St', '555-0123', 'grace.miller@example.com'),
+                ('David', 'Taylor', '606 Chestnut St', '555-4567', 'david.taylor@example.com'),
+                ('Helen', 'Anderson', '707 Spruce St', '555-8901', 'helen.anderson@example.com');
+            ]]>
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>
