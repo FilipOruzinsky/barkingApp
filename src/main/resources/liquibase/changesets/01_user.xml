@@ -12,16 +12,16 @@
     </changeSet>
 
     <changeSet id="2" author="foruzsinky">
-        <comment>KAN-8: Create table "user"</comment>
+        <comment>KAN-8: Create table "user_k3"</comment>
         <sql>
             <![CDATA[
-            CREATE TABLE IF NOT EXISTS "user"
+            CREATE TABLE IF NOT EXISTS "user_k3"
             (
-               "userId"       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-                "firstName"    VARCHAR(255),
-                "lastName"     VARCHAR(255),
+               "user_id"       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                "first_name"    VARCHAR(255),
+                "last_name"     VARCHAR(255),
                 "address"      VARCHAR(255),
-                "phoneNumber"  VARCHAR(20),
+                "phone_number"  VARCHAR(20),
                 "email"        VARCHAR(255)
             );
             ]]>
@@ -32,7 +32,7 @@
         <comment>KAN-8: Insert fake data into "user" table</comment>
         <sql>
             <![CDATA[
-            INSERT INTO "user" ("firstName", "lastName", "address", "phoneNumber", "email")
+            INSERT INTO "user_k3" ("first_name", "last_name", "address", "phone_number", "email")
             VALUES
                 ('John', 'Doe', '123 Main St', '555-1234', 'john.doe@example.com'),
                 ('Jane', 'Smith', '456 Oak St', '555-5678', 'jane.smith@example.com'),
