@@ -1,5 +1,6 @@
 package com.k3project.demo.controller;
 
+import com.k3project.demo.dto.UserDTO;
 import com.k3project.demo.entity.User;
 import com.k3project.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
     @GetMapping(value="/allUsers")
-    public List<User> findAllUsers(){
+    public List<UserDTO> findAllUsers(){
         return userService.findAllUsers();
     }
     @GetMapping("/{userId}")

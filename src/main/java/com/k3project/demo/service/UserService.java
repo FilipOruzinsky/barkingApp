@@ -1,25 +1,35 @@
 package com.k3project.demo.service;
 
+import com.k3project.demo.dto.UserDTO;
 import com.k3project.demo.entity.User;
+import com.k3project.demo.mapper.UserDTOMapper;
 import com.k3project.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService  {
 
-    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final UserDTOMapper userDTOMapper;
+
+    public UserService(UserRepository userRepository, UserDTOMapper userDTOMapper) {
         this.userRepository = userRepository;
+        this.userDTOMapper = userDTOMapper;
     }
 
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+
+    public List<UserDTO> findAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public Optional<User> findById(UUID userId) {
