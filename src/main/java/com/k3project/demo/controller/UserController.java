@@ -1,6 +1,7 @@
 package com.k3project.demo.controller;
 
-import com.k3project.demo.dto.UserDTO;
+import com.k3project.demo.repository.UserRepository;
+import com.k3project.demo.service.dto.UserDTO;
 import com.k3project.demo.entity.User;
 import com.k3project.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -13,35 +14,49 @@ import java.util.UUID;
 co je optional
  */
 @RestController
-@RequestMapping(path ="api_01/users")
+@RequestMapping(path = "api_01/users")
 public class UserController {
-
+   private final UserRepository userRepository;
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
-    @GetMapping(value="/allUsers")
-    public List<UserDTO> findAllUsers(){
+
+    @GetMapping(value = "/allUsers")
+    public List<UserDTO> findAllUsers() {
         return userService.findAllUsers();
     }
-    @GetMapping("/{userId}")
-    public Optional<User>findUserById(@PathVariable("userId")UUID userId){
-        return userService.findById(userId);
+
+    @GetMapping("/email/{email}")
+    public Optional<UserDTO> findUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
+    @GetMapping(value ="/firstName/{firstName}")
+    public Optional<UserDTO> findByfirstName(@PathVariable String firstName){
+        return userService.findUserByfirstName(firstName);
+    }
+    @GetMapping("/findUserByfullName/{firstName}/{lastName}")
+    public Optional<User> findByfirstNameAndlastName(@PathVariable String firstName, @PathVariable String lastName) {
+        System.out.println( "tusom" + " " + userRepository.findByfirstNameAndLastName(firstName, lastName));
+       return userRepository.findByfirstNameAndLastName(firstName, lastName);
+
     }
 
     //ked som manualne zadal ID usera nefungoval post request potom mi napadlo ze UUID generuje id
     @PostMapping(value = "/postUser")
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
+
     //bez value nefungoval putrequest
-    @PutMapping(value = "/putToUser")
-    public User updateUser(@RequestBody User user){
-        return userService.updateUser(user);
-    }
+//    @PutMapping(value = "/putToUser")
+//    public UserDTO updateUser(@RequestBody User user){
+//        return userService.updateUser(user);
+//    }
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable ("userId") UUID userId){
+    public void deleteUser(@PathVariable("userId") UUID userId) {
         userService.deleteUser(userId);
     }
 }
