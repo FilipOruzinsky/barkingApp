@@ -38,9 +38,9 @@ public class UserController {
         return userService.findUserByfirstName(firstName);
     }
     @GetMapping("/findUserByfullName/{firstName}/{lastName}")
-    public Optional<User> findByfirstNameAndlastName(@PathVariable String firstName, @PathVariable String lastName) {
+    public Optional<UserDTO> findByfirstNameAndlastName(@PathVariable String firstName, @PathVariable String lastName) {
         System.out.println( "tusom" + " " + userRepository.findByfirstNameAndLastName(firstName, lastName));
-       return userRepository.findByfirstNameAndLastName(firstName, lastName);
+       return userService.findByfirstNameAndlastName(firstName,lastName);
 
     }
 
@@ -51,10 +51,10 @@ public class UserController {
     }
 
     //bez value nefungoval putrequest
-//    @PutMapping(value = "/putToUser")
-//    public UserDTO updateUser(@RequestBody User user){
-//        return userService.updateUser(user);
-//    }
+    @PutMapping(value = "/putToUser")
+    public User updateUser(@RequestBody UserDTO userDTO){
+        return userService.updateUser(userDTO);
+    }
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable("userId") UUID userId) {
         userService.deleteUser(userId);

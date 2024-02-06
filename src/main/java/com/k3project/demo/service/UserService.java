@@ -28,27 +28,45 @@ public class UserService {
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
-//    public Optional<UserDTO> findById(UUID userId) {
-//        return userRepository.findById(userId).map(userMapper::toDto);
-//    }
 
-    public Optional<UserDTO> findUserByEmail(String email) {
-        System.out.println("findUserByemail: " + userRepository.findByEmail(email).map(userMapper::toDto) );
-        return userRepository.findByEmail(email).map(userMapper::toDto);
-    }
+//    public Optional<UserDTO>findUserByFirstNameAndLastName(String firstName,String lastName){
+//        Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName,lastName);
+//        if (optionalUser.isPresent()){
+//            UserDTO userDTO = userMapper.toDto(optionalUser.get());
+//            return Optional.of(userDTO);
+//        }else {
+//            return Optional.empty();
+//        }
+//    }
     public Optional<UserDTO> findUserByfirstName(String firstName){
         System.out.println("jadaaaa" + userRepository.findByfirstName(firstName).map(userMapper::toDto));
         return userRepository.findByfirstName(firstName).map(userMapper::toDto);
     }
 
-    //    public User findUserByMail (String email){return userRepository.findByMail(email);}
+    public Optional<UserDTO>findByfirstNameAndlastName(String firstName,String lastName){
+       Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName,lastName);
+       if (optionalUser.isPresent()){
+           UserDTO userDTO = userMapper.toDto(optionalUser.get());
+           System.out.println("user found " + userMapper.toDto(optionalUser.get()));
+           return Optional.of(userDTO);
+       }else {
+           System.out.println("user not found");
+           return Optional.empty();
+       }
+    }
+
+    public Optional<UserDTO> findUserByEmail (String email) {
+        return userRepository.findByEmail(email).map(userMapper::toDto);
+    }
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-//    public UserDTO updateUser(User user) {
-//        return userRepository.saver(user);
-//    }
+    public User updateUser(UserDTO userDTO) {
+        User user =  userMapper.toEntity(userDTO);
+        System.out.println("ja som User" + " " +  userRepository.save(user));
+        return userRepository.save(user);
+    }
 
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
