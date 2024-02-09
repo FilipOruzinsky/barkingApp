@@ -1,35 +1,51 @@
 package com.k3project.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "user_k3",schema = "public")
 public class User {
+    @Valid
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", columnDefinition = "uuid", updatable = false, nullable = false)
-//    @Column(name ="user_id")
     private UUID userId;
     @Column(name = "first_name")
+    @NotBlank(message = "First name should not be empty")
+    @NotNull(message = "First name should not be empty")
     private String firstName;
     @Column(name ="last_name")
+    @NotBlank(message = "Last name should not be empty")
+    @NotNull(message = "Last name should not be empty")
     private String lastName;
     @Column(name = "address")
+    @NotBlank(message = "Address should not be empty")
+    @NotNull(message = "Address should not be empty")
     private String address;
     @Column(name = "phone_number")
+    @NotBlank(message = "Phone number should not be empty")
+    @NotNull(message = "Phone number not be empty")
     private String phoneNumber;
     @Column(name = "email")
+    @NotBlank(message = "Email should not be empty")
+    @NotNull(message = "Email should not be empty")
     private String email;
+    @Column(name = "password")
+    private String password;
 
-    public User(UUID userId,String firstName, String lastName, String address, String phoneNumber, String email) {
+    public User(UUID userId,String firstName, String lastName, String address, String phoneNumber, String email,String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
     }
 
     public User() {
@@ -81,6 +97,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

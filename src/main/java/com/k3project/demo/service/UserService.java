@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 public class UserService {
@@ -20,8 +21,8 @@ public class UserService {
     public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-    }
 
+    }
 
     public List<UserDTO> findAllUsers() {
         return userRepository.findAll().stream()
@@ -29,42 +30,32 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-//    public Optional<UserDTO>findUserByFirstNameAndLastName(String firstName,String lastName){
-//        Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName,lastName);
-//        if (optionalUser.isPresent()){
-//            UserDTO userDTO = userMapper.toDto(optionalUser.get());
-//            return Optional.of(userDTO);
-//        }else {
-//            return Optional.empty();
-//        }
-//    }
-    public Optional<UserDTO> findUserByfirstName(String firstName){
-        System.out.println("jadaaaa" + userRepository.findByfirstName(firstName).map(userMapper::toDto));
+    public Optional<UserDTO> findUserByfirstName(String firstName) {
         return userRepository.findByfirstName(firstName).map(userMapper::toDto);
     }
 
-    public Optional<UserDTO>findByfirstNameAndlastName(String firstName,String lastName){
-       Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName,lastName);
-       if (optionalUser.isPresent()){
-           UserDTO userDTO = userMapper.toDto(optionalUser.get());
-           System.out.println("user found " + userMapper.toDto(optionalUser.get()));
-           return Optional.of(userDTO);
-       }else {
-           System.out.println("user not found");
-           return Optional.empty();
-       }
+    public Optional<UserDTO> findByfirstNameAndlastName(String firstName, String lastName) {
+        Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName, lastName);
+        if (optionalUser.isPresent()) {
+            UserDTO userDTO = userMapper.toDto(optionalUser.get());
+            System.out.println("user found " + userMapper.toDto(optionalUser.get()));
+            return Optional.of(userDTO);
+        } else {
+            System.out.println("user not found");
+            return Optional.empty();
+        }
     }
 
-    public Optional<UserDTO> findUserByEmail (String email) {
+    public Optional<UserDTO> findUserByEmail(String email) {
         return userRepository.findByEmail(email).map(userMapper::toDto);
     }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    public User updateUser(UserDTO userDTO) {
-        User user =  userMapper.toEntity(userDTO);
-        System.out.println("ja som User" + " " +  userRepository.save(user));
+
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 
@@ -72,4 +63,13 @@ public class UserService {
         userRepository.deleteById(userId);
 
     }
+
 }
+
+
+
+
+
+
+
+
