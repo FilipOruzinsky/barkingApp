@@ -1,6 +1,5 @@
 package com.k3project.demo.controller;
 
-import com.k3project.demo.repository.UserRepository;
 import com.k3project.demo.service.dto.UserDTO;
 import com.k3project.demo.entity.User;
 import com.k3project.demo.service.UserService;
@@ -19,11 +18,9 @@ import java.util.*;
 //define that all methods will returned Body in serialized Json format
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public UserController( UserService userService) {
         this.userService = userService;
     }
 
@@ -44,7 +41,7 @@ public class UserController {
 
     @GetMapping("/findUserByfullName")
     public Optional<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
-        System.out.println("tusom" + " " + userRepository.findByfirstNameAndLastName(firstName, lastName));
+        System.out.println("tusom" + " " + userService.findByfirstNameAndLastName(firstName, lastName));
         return userService.findByfirstNameAndlastName(firstName, lastName);
 
     }
@@ -58,12 +55,13 @@ public class UserController {
 
     //bez value nefungoval putrequest
     @PutMapping(value = "/putToUser")
-    public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+    public Optional<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
+        //???
+        return Optional.ofNullable(userService.updateUser(userDTO));
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable("userId") UUID userId) {
+    public void deleteUser(@RequestParam("userId") UUID userId) {
         userService.deleteUser(userId);
     }
 

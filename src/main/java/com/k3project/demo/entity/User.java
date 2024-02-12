@@ -35,6 +35,7 @@ public class User {
     @NotBlank(message = "Email should not be empty")
     @NotNull(message = "Email should not be empty")
     private String email;
+    //TODO add validation annotations
     @Column(name = "password")
     private String password;
 

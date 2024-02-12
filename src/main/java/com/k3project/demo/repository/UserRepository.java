@@ -12,11 +12,9 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    //TODO pozriet spravny zapis query
-    @Query("SELECT u FROM User u WHERE u.email = :email")
     Optional<User> findByEmail(@Param("email") String email);
-    @Query("SELECT u FROM User u WHERE u.firstName =:firstName" )
     Optional<User> findByfirstName(@Param("firstName")String firstName);
-    @Query("SELECT u FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName")
+//    @Query("SELECT u FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName")
     Optional<User> findByfirstNameAndLastName(@Param("firstName")String firstName, @Param("lastName")String lastName);
+    
 }

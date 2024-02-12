@@ -49,14 +49,19 @@ public class UserService {
     public Optional<UserDTO> findUserByEmail(String email) {
         return userRepository.findByEmail(email).map(userMapper::toDto);
     }
+    public Optional<UserDTO> findByfirstNameAndLastName(String firstName,String lastName){
+        return userRepository.findByfirstNameAndLastName(firstName,lastName).map(userMapper::toDto);
+    }
 
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public UserDTO updateUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        User updatedUser = userRepository.save(user);
+        return userMapper.toDto(updatedUser);
     }
 
     public void deleteUser(UUID userId) {
