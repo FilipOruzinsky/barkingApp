@@ -30,46 +30,45 @@ public class UserController {
 
     @GetMapping("/email")
     public ResponseEntity<UserDTO> findUserByEmail(@RequestParam String email) {
-        Optional<UserDTO> userOptional = userService.findUserByEmail(email);
-        return userOptional
+        Optional<UserDTO> result = userService.findUserByEmail(email);
+        return result
                 .map(userDTO -> ResponseEntity.ok().body(userDTO))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/firstName")
     public ResponseEntity<UserDTO> findByfirstName(@RequestParam String firstName) {
-        Optional<UserDTO> userDTOOptional = userService.findUserByfirstName(firstName);
-        return userDTOOptional.map(userDTO -> ResponseEntity.ok().body(userDTO))
+        Optional<UserDTO> result = userService.findUserByfirstName(firstName);
+        return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/findUserByfullName")
-    public Optional<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
-        Optional<UserDTO> userDTO3 = userService.findByFirstNameAndLastName(firstName, lastName);
-        return ResponseEntity.ok()
-                .body(userDTO3).getBody();
+    public ResponseEntity<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
+        Optional<UserDTO> result = userService.findByFirstNameAndLastName(firstName, lastName);
+        return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
+                .orElse(ResponseEntity.notFound().build());
 
     }
 
     //ked som manualne zadal ID usera nefungoval post request potom mi napadlo ze UUID generuje id
-    //TODO ResponseEn.
     @PostMapping(value = "/postUser")
     public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO userDTO4 =  userService.saveUser(userDTO);
+        UserDTO result =  userService.saveUser(userDTO);
         return ResponseEntity.ok()
-                .body(userDTO4);
+                .body(result);
     }
 
     //bez value nefungoval putrequest
     @PutMapping(value = "/putToUser")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO userDTO2 = userService.updateUser(userDTO);
+        UserDTO result = userService.updateUser(userDTO);
         return ResponseEntity.ok()
-                .body(userDTO2);
+                .body(result);
     }
 
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/deleteUser")
     public void deleteUser(@RequestParam("userId") UUID userId) {
         userService.deleteUser(userId);
     }
