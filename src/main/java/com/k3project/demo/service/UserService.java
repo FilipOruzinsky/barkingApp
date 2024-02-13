@@ -34,29 +34,26 @@ public class UserService {
         return userRepository.findByfirstName(firstName).map(userMapper::toDto);
     }
 
-    public Optional<UserDTO> findByfirstNameAndlastName(String firstName, String lastName) {
-        Optional<User> optionalUser = userRepository.findByfirstNameAndLastName(firstName, lastName);
-        if (optionalUser.isPresent()) {
-            UserDTO userDTO = userMapper.toDto(optionalUser.get());
-            System.out.println("user found " + userMapper.toDto(optionalUser.get()));
-            return Optional.of(userDTO);
-        } else {
-            System.out.println("user not found");
-            return Optional.empty();
-        }
-    }
-
     public Optional<UserDTO> findUserByEmail(String email) {
         return userRepository.findByEmail(email).map(userMapper::toDto);
     }
-    public Optional<UserDTO> findByfirstNameAndLastName(String firstName,String lastName){
-        return userRepository.findByfirstNameAndLastName(firstName,lastName).map(userMapper::toDto);
+
+    public Optional<UserDTO> findByFirstNameAndLastName(String firstName, String lastName) {
+        Optional<User> userOptional = userRepository.findByFirstNameAndLastName(firstName, lastName);
+        if (userOptional.isPresent()) {
+            return Optional.ofNullable(userMapper.toDto(userOptional.get()));
+        } else {
+            System.out.println("User not found for firstName: " + firstName + ", lastName: " + lastName);
+            return null;
+        }
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
 
+    public UserDTO saveUser(UserDTO userDTO) {
+        User user1 = userMapper.toEntity(userDTO);
+        User savedUser = userRepository.save(user1);
+        return userMapper.toDto(savedUser);
+    }
 
     public UserDTO updateUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
@@ -68,8 +65,8 @@ public class UserService {
         userRepository.deleteById(userId);
 
     }
-
 }
+
 
 
 

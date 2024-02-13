@@ -13,8 +13,9 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(@Param("email") String email);
-    Optional<User> findByfirstName(@Param("firstName")String firstName);
-//    @Query("SELECT u FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName")
-    Optional<User> findByfirstNameAndLastName(@Param("firstName")String firstName, @Param("lastName")String lastName);
-    
+
+    Optional<User> findByfirstName(@Param("firstName") String firstName);
+
+    Optional<User> findByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
 }

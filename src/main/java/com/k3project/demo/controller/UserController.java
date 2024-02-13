@@ -6,13 +6,12 @@ import com.k3project.demo.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
-
 
 @RestController
 //define that all methods will returned Body in serialized Json format
@@ -30,35 +29,45 @@ public class UserController {
     }
 
     @GetMapping("/email")
-    public Optional<UserDTO> findUserByEmail(@RequestParam String email) {
-        return userService.findUserByEmail(email);
+    public ResponseEntity<UserDTO> findUserByEmail(@RequestParam String email) {
+        Optional<UserDTO> userOptional = userService.findUserByEmail(email);
+        return userOptional
+                .map(userDTO -> ResponseEntity.ok().body(userDTO))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/firstName")
-    public Optional<UserDTO> findByfirstName(@RequestParam String firstName) {
-        return userService.findUserByfirstName(firstName);
+    public ResponseEntity<UserDTO> findByfirstName(@RequestParam String firstName) {
+        Optional<UserDTO> userDTOOptional = userService.findUserByfirstName(firstName);
+        return userDTOOptional.map(userDTO -> ResponseEntity.ok().body(userDTO))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/findUserByfullName")
     public Optional<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
-        System.out.println("tusom" + " " + userService.findByfirstNameAndLastName(firstName, lastName));
-        return userService.findByfirstNameAndlastName(firstName, lastName);
+        Optional<UserDTO> userDTO3 = userService.findByFirstNameAndLastName(firstName, lastName);
+        return ResponseEntity.ok()
+                .body(userDTO3).getBody();
 
     }
 
     //ked som manualne zadal ID usera nefungoval post request potom mi napadlo ze UUID generuje id
+    //TODO ResponseEn.
     @PostMapping(value = "/postUser")
-    public User saveUser(@Valid @RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO) {
+        UserDTO userDTO4 =  userService.saveUser(userDTO);
+        return ResponseEntity.ok()
+                .body(userDTO4);
     }
-
 
     //bez value nefungoval putrequest
     @PutMapping(value = "/putToUser")
-    public Optional<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
-        //???
-        return Optional.ofNullable(userService.updateUser(userDTO));
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+        UserDTO userDTO2 = userService.updateUser(userDTO);
+        return ResponseEntity.ok()
+                .body(userDTO2);
     }
+
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@RequestParam("userId") UUID userId) {
@@ -74,6 +83,6 @@ public class UserController {
         return fieldName + ": " + errorMessage;
     }
 
-
     }
+
 
