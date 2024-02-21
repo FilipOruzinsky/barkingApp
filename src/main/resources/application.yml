@@ -1,0 +1,72 @@
+server:
+  port: 8080
+application:
+  name: myApp
+spring:
+  profiles:
+    group:
+      local: default
+  datasource:
+    url: jdbc:postgresql://localhost:5432/barkingDB?preferQueryMode=simple&currentSchema=public
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: true
+    properties:
+      hibernate:
+        order_updates: true
+        default_schema: public
+        connection:
+          provider_disables_autocommit: false
+        show_sql: true
+  liquibase:
+    change-log: classpath:/liquibase/master.xml
+    default-schema: public
+    liquibase-schema: public
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    liquibase: TRACE
+    org.springframework.jdbc.datasource.init: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+    net.lbruun.springboot.preliquibase: TRACE
+    org.apache.http.wire: INFO
+    jpa: DEBUG
+
+
+
+springdoc: # https://springdoc.org/#springdoc-openapi-core-properties
+  api-docs:
+    path: /api/docs/v3/api-docs
+    enabled: true
+    resolve-schema-properties: true
+
+  packagesToScan:
+    - com.tsystems.asm.cve
+
+  show-actuator: true
+
+  swagger-ui: # https://springdoc.org/#swagger-ui-properties
+    enabled: true
+    #disable-swagger-default-url: true
+    path: /api/swagger-ui # swagger is available https://HOST:PORT/api/swagger-ui/index.html
+    urlsPrimaryName: springdocDefault
+    operationsSorter: method
+    filter: true
+
+#    oauth:
+#      appName: 'CVE-SERVICE'
+#      clientId: ${spring.security.oauth2.client.registration.keycloak.client-id}
+#      clientSecret: ${spring.security.oauth2.client.registration.keycloak.client-secret}
+#
+#    oauth2-redirect-url: /swagger-ui/oauth2-redirect.html
+#    persistAuthorization: true
+#
+#  oAuthFlow:
+#    authorizationUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/auth
+#    tokenUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/token
