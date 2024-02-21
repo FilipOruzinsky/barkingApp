@@ -55,7 +55,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findUserByEmail(String)
      */
-    @GetMapping("/user")
+    @GetMapping("/user/email")
     public ResponseEntity<UserDTO> findUserByEmail(@RequestParam String email) {
         Optional<UserDTO> result = userService.findUserByEmail(email);
         return result
@@ -75,7 +75,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findUserByfirstName(String)
      */
-    @GetMapping(value = "/user")
+    @GetMapping("/user/firstname")
     public ResponseEntity<UserDTO> findByfirstName(@RequestParam String firstName) {
         Optional<UserDTO> result = userService.findUserByfirstName(firstName);
         return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
@@ -116,7 +116,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#saveUser(UserDTO)
      */
-    @PostMapping(value = "/user")
+    @PostMapping("/user")
     public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO result = userService.saveUser(userDTO);
         return ResponseEntity.ok()
@@ -137,7 +137,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#updateUser(UserDTO)
      */
-    @PutMapping(value = "/user")
+    @PutMapping("/user")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO userDTO2 = userService.updateUser(userDTO);
         return ResponseEntity.ok()
