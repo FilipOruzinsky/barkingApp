@@ -18,7 +18,7 @@ import java.util.*;
 @Tag(name = "User Management", description = "APIs for managing users")
 @RestController
 //define that all methods will returned Body in serialized Json format
-@RequestMapping(path = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     private final UserService userService;
 
@@ -38,7 +38,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred,
      * @see UserService#findAllUsers()
      */
-    @GetMapping(value = "users")
+    @GetMapping(value = "/users")
     public List<UserDTO> findAllUsers() {
         return userService.findAllUsers();
     }
@@ -55,7 +55,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findUserByEmail(String)
      */
-    @GetMapping("/email")
+    @GetMapping("/user")
     public ResponseEntity<UserDTO> findUserByEmail(@RequestParam String email) {
         Optional<UserDTO> result = userService.findUserByEmail(email);
         return result
@@ -75,7 +75,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findUserByfirstName(String)
      */
-    @GetMapping(value = "/firstName")
+    @GetMapping(value = "/user")
     public ResponseEntity<UserDTO> findByfirstName(@RequestParam String firstName) {
         Optional<UserDTO> result = userService.findUserByfirstName(firstName);
         return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
@@ -95,7 +95,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findByFirstNameAndLastName(String, String)
      */
-    @GetMapping("/findUserByfullName")
+    @GetMapping("/user")
     public ResponseEntity<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
         Optional<UserDTO> result = userService.findByFirstNameAndLastName(firstName, lastName);
         return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
@@ -116,7 +116,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#saveUser(UserDTO)
      */
-    @PostMapping(value = "/postUser")
+    @PostMapping(value = "/user")
     public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO result = userService.saveUser(userDTO);
         return ResponseEntity.ok()
@@ -137,7 +137,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#updateUser(UserDTO)
      */
-    @PutMapping(value = "/putToUser")
+    @PutMapping(value = "/user")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO userDTO2 = userService.updateUser(userDTO);
         return ResponseEntity.ok()
@@ -156,7 +156,7 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#deleteUser(UUID)
      */
-    @DeleteMapping("/deleteUser")
+    @DeleteMapping("/user")
     public void deleteUser(@RequestParam("userId") UUID userId) {
         userService.deleteUser(userId);
     }
