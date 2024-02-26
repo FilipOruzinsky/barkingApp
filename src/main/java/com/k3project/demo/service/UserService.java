@@ -1,7 +1,7 @@
 package com.k3project.demo.service;
 
+import com.k3project.demo.entity.UserEntity;
 import com.k3project.demo.service.dto.UserDTO;
-import com.k3project.demo.entity.User;
 import com.k3project.demo.repository.UserRepository;
 import com.k3project.demo.service.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public Optional<UserDTO> findByFirstNameAndLastName(String firstName, String lastName) {
-        Optional<User> userOptional = userRepository.findByFirstNameAndLastName(firstName, lastName);
+        Optional<UserEntity> userOptional = userRepository.findByFirstNameAndLastName(firstName, lastName);
         if (userOptional.isPresent()) {
             return Optional.ofNullable(userMapper.toDto(userOptional.get()));
         } else {
@@ -50,14 +50,14 @@ public class UserService {
 
 
     public UserDTO saveUser(UserDTO userDTO) {
-        User user1 = userMapper.toEntity(userDTO);
-        User savedUser = userRepository.save(user1);
+        UserEntity user1 = userMapper.toEntity(userDTO);
+        UserEntity savedUser = userRepository.save(user1);
         return userMapper.toDto(savedUser);
     }
 
     public UserDTO updateUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
-        User updatedUser = userRepository.save(user);
+        UserEntity user = userMapper.toEntity(userDTO);
+        UserEntity updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }
 

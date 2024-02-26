@@ -1,7 +1,6 @@
 package com.k3project.demo.controller;
 
 import com.k3project.demo.service.dto.UserDTO;
-import com.k3project.demo.entity.User;
 import com.k3project.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
