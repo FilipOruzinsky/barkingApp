@@ -59,14 +59,3 @@ springdoc: # https://springdoc.org/#springdoc-openapi-core-properties
     operationsSorter: method
     filter: true
 
-#    oauth:
-#      appName: 'CVE-SERVICE'
-#      clientId: ${spring.security.oauth2.client.registration.keycloak.client-id}
-#      clientSecret: ${spring.security.oauth2.client.registration.keycloak.client-secret}
-#
-#    oauth2-redirect-url: /swagger-ui/oauth2-redirect.html
-#    persistAuthorization: true
-#
-#  oAuthFlow:
-#    authorizationUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/auth
-#    tokenUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/token
