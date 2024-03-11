@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 application:
   name: myApp
 spring:
@@ -47,14 +48,16 @@ springdoc: # https://springdoc.org/#springdoc-openapi-core-properties
     resolve-schema-properties: true
 
   packagesToScan:
-    - com.tsystems.asm.cve
+    - com.myApp
 
   show-actuator: true
 
   swagger-ui: # https://springdoc.org/#swagger-ui-properties
     enabled: true
-    #disable-swagger-default-url: true
+    disable-swagger-default-url: true
     path: /api/swagger-ui # swagger is available https://HOST:PORT/api/swagger-ui/index.html
+#    configUrl: /api/docs/v3/api-docs/swagger-config
+#    url: /v3/api-docs
     urlsPrimaryName: springdocDefault
     operationsSorter: method
     filter: true

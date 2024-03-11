@@ -6,28 +6,18 @@
 
 
     <changeSet id="1" author="foruzinsky">
-        <comment>KAN-8: Create table "roles"</comment>
+        <comment>KAN-8: Create table "user_roles"</comment>
         <sql>
             <![CDATA[
-            CREATE TABLE IF NOT EXISTS "roles"
+            CREATE TABLE IF NOT EXISTS "user_roles"
 
         (
-            "id" BIGINT,
-            "name" VARCHAR (255)
+            "user_id" UUID,
+            "role_id" BIGINT
         );
 
             ]]>
         </sql>
     </changeSet>
-    <changeSet id="2" author="foruzinsky">
-        <comment>KAN-8: insert values to the table</comment>
-        <sql>
-            <![CDATA[
-        INSERT INTO "roles" ("id", "name") VALUES ('1', 'ADMIN');
-        INSERT INTO "roles" ("id", "name") VALUES ('2', 'USER');
-        ]]>
-        </sql>
-    </changeSet>
-
 
 </databaseChangeLog>

@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public Optional<UserDTO> findUserByfirstName(String firstName) {
-        return userRepository.findByfirstName(firstName).map(userMapper::toDto);
+        return userRepository.findByFirstName(firstName).map(userMapper::toDto);
     }
 
     public Optional<UserDTO> findUserByEmail(String email) {
