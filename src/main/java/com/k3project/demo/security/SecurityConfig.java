@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -36,36 +37,15 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .securityMatcher("/api/**", "/app/**").authorizeHttpRequests((authz) -> authz
+                .securityMatcher("/api/v1", "/app/**").authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v2/hello").permitAll()
-                        .requestMatchers("/api/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs").permitAll()
-                        .requestMatchers("/api/docs/v3/api-docs").permitAll()
-                        .requestMatchers("api/auth/**").permitAll()
-                        .requestMatchers("api/v1/user/firstname").permitAll()
-                        .requestMatchers("api/auth/register").permitAll()
-                        .requestMatchers("api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET).authenticated()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-//    public UserDetailsService users() {
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -75,6 +55,10 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter(){
+        return new JWTAuthenticationFilter();
     }
 
     private static final String[] AUTH_WHITELIST = {
@@ -89,6 +73,10 @@ public class SecurityConfig {
             "/api/swagger-ui/**",
             "/api/docs/v3/api-docs/swagger-config",
             "/v3/api-docs",
-            "api/auth/login"
+            "api/auth/login",
+            "api/auth/register",
+            "api/auth/**",
+            "/api/docs/v3/api-docs"
+
     };
 }

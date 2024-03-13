@@ -4,6 +4,8 @@ import com.k3project.demo.entity.Role;
 import com.k3project.demo.entity.UserEntity;
 import com.k3project.demo.repository.RoleRepository;
 import com.k3project.demo.repository.UserRepository;
+import com.k3project.demo.security.JWTGenerator;
+import com.k3project.demo.service.dto.AuthResponseDTO;
 import com.k3project.demo.service.dto.LoginDTO;
 import com.k3project.demo.service.dto.RegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,16 @@ public class AuthController {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+
+    private JWTGenerator jwtGenerator;
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
+                          RoleRepository roleRepository, PasswordEncoder passwordEncoder,JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO){
@@ -60,11 +66,12 @@ public class AuthController {
 
     }
     @PostMapping("login")
-    public ResponseEntity<String>login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<AuthResponseDTO>login(@RequestBody LoginDTO loginDTO){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getFirstName(),
                         loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed success!",HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+        return new ResponseEntity<>(new AuthResponseDTO(token),HttpStatus.OK);
     }
 }

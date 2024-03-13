@@ -17,9 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -42,7 +39,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user = userRepository.findByFirstName(firstName).orElseThrow(()->new UsernameNotFoundException("Username not fond"));
         return new User(user.getFirstName(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
     }
-
 
     private Collection<GrantedAuthority>mapRolesToAuthorities(List<Role>roles){
         return roles.stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
