@@ -53,7 +53,6 @@ public class AuthController {
         userEntity.setAddress(registerDTO.getAddress());
         userEntity.setPhoneNumber(registerDTO.getPhoneNumber());
         userEntity.setEmail(registerDTO.getEmail());
-        userEntity.setPassword(registerDTO.getPassword());
 
         userEntity.setPassword(passwordEncoder.encode((registerDTO.getPassword())));
 

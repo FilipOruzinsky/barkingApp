@@ -15,7 +15,6 @@
             "user_id" UUID,
             "role_id" BIGINT
         );
-
             ]]>
         </sql>
     </changeSet>
