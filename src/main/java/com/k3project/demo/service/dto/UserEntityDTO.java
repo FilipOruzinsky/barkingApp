@@ -2,7 +2,7 @@ package com.k3project.demo.service.dto;
 
 import java.util.UUID;
 
-public record UserDTO (
+public record UserEntityDTO(
       UUID userId,
       String firstName,
       String lastName,

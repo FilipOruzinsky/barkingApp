@@ -12,14 +12,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByEmail(@Param("email") String email);
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserEntity u WHERE u.email = :email")
-
-    Boolean existByEmail(@Param("email") String email);
-    Optional<UserEntity> findByLastName(@Param("lastName") String lastName);
-
-    Optional<UserEntity>findByFirstName(String firstName);
-//    Optional<UserEntity> findByUsername(String firstName);
-
+    Optional<UserEntity>findByFirstName(@Param("firstName") String firstName);
     Optional<UserEntity> findByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
-
 }
