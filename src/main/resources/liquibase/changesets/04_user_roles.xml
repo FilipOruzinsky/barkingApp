@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+    <changeSet id="1" author="foruzinsky">
+        <comment>KAN-8: Create table "user_roles"</comment>
+        <sql>
+            <![CDATA[
+            CREATE TABLE IF NOT EXISTS "user_roles"
+
+        (
+            "user_id" UUID,
+            "role_id" BIGINT
+        );
+            ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

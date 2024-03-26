@@ -1,10 +1,12 @@
 package com.k3project.demo.controller;
 
-import com.k3project.demo.service.dto.UserDTO;
-import com.k3project.demo.entity.User;
+import com.k3project.demo.service.dto.UserEntityDTO;
 import com.k3project.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-
 @Tag(name = "User Management", description = "APIs for managing users")
 @RestController
-//define that all methods will returned Body in serialized Json format
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
+
+    Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -37,8 +39,10 @@ public class UserController {
      * @see UserService#findAllUsers()
      */
     @GetMapping(value = "/users")
-    public List<UserDTO> findAllUsers() {
-        return userService.findAllUsers();
+    public List<UserEntityDTO> findAllUsers() {
+        List<UserEntityDTO> users = userService.findAllUsers();
+        logger.info("Retrieved {} users from database", users.size());
+        return users;
     }
 
     /**
@@ -54,10 +58,11 @@ public class UserController {
      * @see UserService#findUserByEmail(String)
      */
     @GetMapping("/user/email")
-    public ResponseEntity<UserDTO> findUserByEmail(@RequestParam String email) {
-        Optional<UserDTO> result = userService.findUserByEmail(email);
+    public ResponseEntity<UserEntityDTO> findUserByEmail(@RequestParam String email) {
+        Optional<UserEntityDTO> result = userService.findUserByEmail(email);
+        logger.info("User with email '{}' was find ",email );
         return result
-                .map(userDTO -> ResponseEntity.ok().body(userDTO))
+                .map(userEntityDTO -> ResponseEntity.ok().body(userEntityDTO))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -71,19 +76,20 @@ public class UserController {
      * or with status {@code 400(Bad Request)} if the request is not valid,
      * or with status {@code 404(Not Found)} if first name does not match with any email in database,
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
-     * @see UserService#findUserByfirstName(String)
+     * @see UserService#findUserByFirstName(String)
      */
     @GetMapping("/user/firstname")
-    public ResponseEntity<UserDTO> findByfirstName(@RequestParam String firstName) {
-        Optional<UserDTO> result = userService.findUserByfirstName(firstName);
-        return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
+    public ResponseEntity<UserEntityDTO> findByFirstName(@RequestParam String firstName) {
+        Optional<UserEntityDTO> result = userService.findUserByFirstName(firstName);
+        logger.info("User with first name '{}' was find ",firstName);
+        return result.map(userEntityDTO -> ResponseEntity.ok().body(userEntityDTO))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     /**
      * Retrieves a user by their first and last name  address.
      * <p>
-     * {@code GET /findUserByfullName}: get User from database regarding to his first name
+     * {@code GET /findUserByFirstNameAndLastName}: get User from database regarding to his first name
      *
      * @param firstName The first name of the user to retrieve.
      * @param lastName  The last name of the user to retrieve.
@@ -93,10 +99,12 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#findByFirstNameAndLastName(String, String)
      */
+    //TODO
     @GetMapping("/user")
-    public ResponseEntity<UserDTO> findByfirstNameAndlastName(@RequestParam String firstName, @RequestParam String lastName) {
-        Optional<UserDTO> result = userService.findByFirstNameAndLastName(firstName, lastName);
-        return result.map(userDTO -> ResponseEntity.ok().body(userDTO))
+    public ResponseEntity<UserEntityDTO> findByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
+        Optional<UserEntityDTO> result = userService.findByFirstNameAndLastName(firstName, lastName);
+        logger.info("User found by first name '{}' and last name '{}': ", firstName, lastName);
+        return result.map(userEntityDTO -> ResponseEntity.ok().body(userEntityDTO))
                 .orElse(ResponseEntity.notFound().build());
 
     }
@@ -108,15 +116,16 @@ public class UserController {
      * The user data is validated using Bean Validation annotations.
      * {@code POST/postUser}: save new User to database
      *
-     * @param userDTO The UserDTO object containing the user information to be saved.
+     * @param userEntityDTO The UserDTO object containing the user information to be saved.
      * @return the {@link ResponseEntity} with status {@code 200(OK)} user was successfully saved in database
      * or with status {@code 400(Bad Request)} if the request is not valid,
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
-     * @see UserService#saveUser(UserDTO)
+     * @see UserService#saveUser(UserEntityDTO)
      */
     @PostMapping("/user")
-    public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO result = userService.saveUser(userDTO);
+    public ResponseEntity<UserEntityDTO> saveUser(@Valid @RequestBody UserEntityDTO userEntityDTO) {
+        UserEntityDTO result = userService.saveUser(userEntityDTO);
+        logger.info("User saved successfully" +  result);
         return ResponseEntity.ok()
                 .body(result);
     }
@@ -128,18 +137,19 @@ public class UserController {
      * The user data is validated using Bean Validation annotations.
      * {@code PUT/putToUser} : update existing user
      *
-     * @param userDTO The UserDTO object containing the updated user information.
+     * @param userEntityDTO The UserDTO object containing the updated user information.
      * @return the {@link ResponseEntity} with status {@code 200(OK) user was successfully updated}.
      * or with status {@code 400(Bad Request)} if the request is not valid,
      * or with status {@code 404(Not Found)} if user which should be updated is not exist in database,
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
-     * @see UserService#updateUser(UserDTO)
+     * @see UserService#updateUser(UserEntityDTO)
      */
     @PutMapping("/user")
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO userDTO2 = userService.updateUser(userDTO);
+    public ResponseEntity<UserEntityDTO> updateUser(@Valid @RequestBody UserEntityDTO userEntityDTO) {
+        UserEntityDTO updatedUser = userService.updateUser(userEntityDTO);
+        logger.info("User" + updatedUser + " was updated successfully");
         return ResponseEntity.ok()
-                .body(userDTO2);
+                .body(updatedUser);
     }
 
     /**
@@ -154,8 +164,9 @@ public class UserController {
      * or with status {@code 500(Internal Server Error)}when the server error was occurred
      * @see UserService#deleteUser(UUID)
      */
-    @DeleteMapping("/user")
+    @DeleteMapping("/user/delete")
     public void deleteUser(@RequestParam("userId") UUID userId) {
+        logger.info("Deleting user with ID: {}", userId);
         userService.deleteUser(userId);
     }
 

@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 application:
   name: myApp
 spring:
@@ -29,7 +30,7 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
+    org.hibernate.SQL: OFF
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     liquibase: TRACE
     org.springframework.jdbc.datasource.init: DEBUG
@@ -47,26 +48,17 @@ springdoc: # https://springdoc.org/#springdoc-openapi-core-properties
     resolve-schema-properties: true
 
   packagesToScan:
-    - com.tsystems.asm.cve
+    - com.myApp
 
   show-actuator: true
 
   swagger-ui: # https://springdoc.org/#swagger-ui-properties
     enabled: true
-    #disable-swagger-default-url: true
+    disable-swagger-default-url: true
     path: /api/swagger-ui # swagger is available https://HOST:PORT/api/swagger-ui/index.html
+#    configUrl: /api/docs/v3/api-docs/swagger-config
+#    url: /v3/api-docs
     urlsPrimaryName: springdocDefault
     operationsSorter: method
     filter: true
 
-#    oauth:
-#      appName: 'CVE-SERVICE'
-#      clientId: ${spring.security.oauth2.client.registration.keycloak.client-id}
-#      clientSecret: ${spring.security.oauth2.client.registration.keycloak.client-secret}
-#
-#    oauth2-redirect-url: /swagger-ui/oauth2-redirect.html
-#    persistAuthorization: true
-#
-#  oAuthFlow:
-#    authorizationUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/auth
-#    tokenUrl: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/token

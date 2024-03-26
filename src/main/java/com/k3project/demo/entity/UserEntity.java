@@ -5,11 +5,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "user_k3",schema = "public")
-public class User {
+public class UserEntity {
     @Valid
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,11 +37,14 @@ public class User {
     @NotBlank(message = "Email should not be empty")
     @NotNull(message = "Email should not be empty")
     private String email;
-    //TODO add validation annotations
     @Column(name = "password")
     private String password;
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    private List<Role>roles = new ArrayList<>();
 
-    public User(UUID userId,String firstName, String lastName, String address, String phoneNumber, String email,String password) {
+        public UserEntity(UUID userId, String firstName, String lastName, String address, String phoneNumber, String email, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,8 +53,15 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public List<Role> getRoles() {
+            return roles;
+    }
 
-    public User() {
+    public UserEntity() {
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public UUID getUserId() {
@@ -119,4 +131,6 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
 }

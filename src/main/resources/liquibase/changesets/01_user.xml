@@ -23,7 +23,7 @@
                 "address"      VARCHAR(255),
                 "phone_number"  VARCHAR(20),
                 "email"        VARCHAR(255),
-                "password"     VARCHAR(255)
+                "password"     VARCHAR(999)
             );
             ]]>
         </sql>
@@ -35,19 +35,21 @@
             <![CDATA[
             INSERT INTO "user_k3" ("first_name", "last_name", "address", "phone_number", "email", "password")
             VALUES
-    ('John', 'Doe', '123 Main St', '555-1234', 'john.doe@example.com', 'password1'),
-    ('Jane', 'Smith', '456 Oak St', '555-5678', 'jane.smith@example.com', 'password2'),
-    ('Bob', 'Johnson', '789 Pine St', '555-9012', 'bob.johnson@example.com', 'password3'),
-    ('Alice', 'Williams', '101 Elm St', '555-3456', 'alice.williams@example.com', 'password4'),
-    ('Charlie', 'Brown', '202 Maple St', '555-7890', 'charlie.brown@example.com', 'password5'),
-    ('Eva', 'Davis', '303 Cedar St', '555-2345', 'eva.davis@example.com', 'password6'),
-    ('Frank', 'Jones', '404 Birch St', '555-6789', 'frank.jones@example.com', 'password7'),
-    ('Grace', 'Miller', '505 Walnut St', '555-0123', 'grace.miller@example.com', 'password8'),
-    ('David', 'Taylor', '606 Chestnut St', '555-4567', 'david.taylor@example.com', 'password9'),
-    ('Helen', 'Anderson', '707 Spruce St', '555-8901', 'helen.anderson@example.com', 'password10');
+    ('John', 'Doe', '123 Main St', '555-1234', 'john.doe@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Jane', 'Smith', '456 Oak St', '555-5678', 'jane.smith@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Bob', 'Johnson', '789 Pine St', '555-9012', 'bob.johnson@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Alice', 'Williams', '101 Elm St', '555-3456', 'alice.williams@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Charlie', 'Brown', '202 Maple St', '555-7890', 'charlie.brown@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Eva', 'Davis', '303 Cedar St', '555-2345', 'eva.davis@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Frank', 'Jones', '404 Birch St', '555-6789', 'frank.jones@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Grace', 'Miller', '505 Walnut St', '555-0123', 'grace.miller@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('David', 'Taylor', '606 Chestnut St', '555-4567', 'david.taylor@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G'),
+    ('Helen', 'Anderson', '707 Spruce St', '555-8901', 'helen.anderson@example.com', '$2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G');
             ]]>
         </sql>
     </changeSet>
+
+<!--    password = $2a$12$CNmx10Rly4gqWWUN.rCRW.4n4yBZwLToOomD97EgcnAjGhxWfmg/G-->
 
 
 </databaseChangeLog>
