@@ -27,7 +27,7 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
     }
-
+//TODO pridat endp. pre admina del.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .and()
                 .securityMatcher("/api/v1", "/app/**").authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET).authenticated()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())

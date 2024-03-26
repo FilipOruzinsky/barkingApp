@@ -31,21 +31,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String firstName) throws UsernameNotFoundException {
-        logger.info("Loading user by username: {}", firstName);
-        try {
             UserEntity user = userRepository.findByFirstName(firstName)
                     .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + firstName));
-            logger.info("User '{}' loaded successfully", firstName);
+            logger.debug("User '{}' loaded successfully", firstName);
             return new User(user.getFirstName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-        } catch (UsernameNotFoundException e) {
-            logger.error("Username not found: {}", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            logger.error("Error occurred while loading user by username '{}': {}", firstName, e.getMessage(), e);
-            throw new UsernameNotFoundException("Error occurred while loading user by username: " + firstName, e);
-        }finally {
-            logger.info("Method loadUserByUsername end");
-        }
+
     }
 
     private Collection<GrantedAuthority>mapRolesToAuthorities(List<Role>roles){
